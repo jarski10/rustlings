@@ -12,7 +12,6 @@ struct Color {
     blue: u8,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -23,22 +22,67 @@ struct Color {
 // but the slice implementation needs to check the slice length!
 // Also note that correct RGB color values must be integers in the 0..=255 range.
 
+fn is_rgb(val: i16) -> bool{
+    if val<0 || val >255{
+        return false
+    }
+    return true
+}
+
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if !(is_rgb(tuple.0) && is_rgb(tuple.1) && is_rgb(tuple.2)){
+            return Err(format!("error"))?;
+        }
+        
+        let color = Color{
+            red: tuple.0 as u8,
+            green: tuple.1 as u8,
+            blue: tuple.2 as u8,
+        };
+        Ok(color)
+    }
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr.len() != 3 {
+            return Err(format!("error"))?;
+        }
+        if !(is_rgb(arr[0]) && is_rgb(arr[1]) && is_rgb(arr[2])){
+            return Err(format!("error"))?;
+        }
+        let color = Color{
+            red: arr[0] as u8,
+            green: arr[1] as u8,
+            blue: arr[2] as u8,
+        };
+        Ok(color)
+    }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = Box<dyn error::Error>;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(format!("error"))?;
+        }
+        if !(is_rgb(slice[0]) && is_rgb(slice[1]) && is_rgb(slice[2])){
+            return Err(format!("error"))?;
+        }
+        
+        let color = Color{
+            red: slice[0] as u8,
+            green: slice[1] as u8,
+            blue: slice[2] as u8,
+        };
+        Ok(color)
+    }
 }
 
 fn main() {
